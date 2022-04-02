@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>HTML</title>
+
+  <!-- HTML -->
+
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  
+  <div class="controlls">
+    
+    <button id="top">up</button>
+    
+    <div id="middle">
+      
+      <button id="left">left</button>
+      
+      <button id="right">right</button>
+      
+    </div>
+    
+    <button id="bottom">down</button>
+    
+  </div>
+  
+  <canvas id="canvas"></canvas>
+
+  <!-- Initializing firebase -->
+
+  <script type="module">
+  
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBonJzjMvcM94sUSIPujyahtPSvx3pypvc",
+      authDomain: "multiplayer-demo-d7ba7.firebaseapp.com",
+      databaseURL: "https://multiplayer-demo-d7ba7-default-rtdb.firebaseio.com",
+      projectId: "multiplayer-demo-d7ba7",
+      storageBucket: "multiplayer-demo-d7ba7.appspot.com",
+      messagingSenderId: "91778016845",
+      appId: "1:91778016845:web:b58dcdfa921649f3bd5e04"
+    };
+    
+    const app = initializeApp(firebaseConfig);
+    
+  </script>
+
+  <!-- Project -->
+
+  <script type="module" src="main.js"></script>
+</body>
+
+</html>
