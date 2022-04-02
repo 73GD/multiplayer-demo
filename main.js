@@ -175,7 +175,7 @@ function initGame() {
 
   function update() {
     requestAnimationFrame(update);
-    orbitControls.update();
+
     renderer.render(scene, thisCPlayer.camera);
     renderer.setSize(innerWidth, innerHeight);
     thisCPlayer.camera.aspect = innerWidth / innerHeight;
