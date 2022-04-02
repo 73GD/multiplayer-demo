@@ -2,7 +2,7 @@
 
 import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 
-import { getDatabase, ref, set, child, get, onDisconnect, onValue, onChildAdded } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+import { getDatabase, ref, set, child, get, onDisconnect, onValue, onChildAdded, onChildRemoved } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
 
@@ -23,7 +23,7 @@ canvas.width = gameWidth;
 canvas.height = gameHeight;
 
 class Player {
-  constructor(x, y, width, height, color, isYou) {
+  constructor(x, y, width, height, color, isYou, name) {
     this.position = {
       x: x,
       y: y
@@ -32,9 +32,14 @@ class Player {
     this.height = height;
     this.color = color;
     this.isYou = isYou;
+    this.name = name;
   }
   draw(ctx) {
+    ctx.fillStyle = this.color;
     ctx.fillRect(this.position.x * 10, this.position.y * 10, this.width, this.height);
+    ctx.fillStyle = 'black';
+    ctx.font = "8px Arial";
+    ctx.fillText(this.name, this.position.x * 10 + 4, (this.position.y * 10) + (4 + this.height / 2));
   }
 }
 
@@ -53,13 +58,14 @@ function createName() {
     "cat",
     "bear",
     "panda",
-    "donkey"
+    "donkey",
+    "cube"
   ]);
 
   return `${prefix}_${animals}`
 }
 
-const playerColors = ['black', 'brown', 'pink', 'yellow', 'red'];
+const playerColors = ['white', 'pink', 'red', 'green', 'yellow', 'brown'];
 const auth = getAuth();
 
 signInAnonymously(auth).then(() => {}).catch((error) => {
@@ -110,15 +116,30 @@ function initGame() {
   });
   onChildAdded(allPlayersRef, (snapshot) => {
     const addedPlayer = snapshot.val();
-    const cPlayer = new Player(addedPlayer.x, addedPlayer.y, 50, 50, addedPlayer.color, false);
+    const cPlayer = new Player(addedPlayer.x, addedPlayer.y, 50, 50, addedPlayer.color, false, addedPlayer.name);
     allCPlayers[addedPlayer.uid] = cPlayer;
   });
+  onChildRemoved(allPlayersRef, (snapshot) => {
+    const removedKey = snapshot.val().uid;
+
+    delete allCPlayers[removedKey];
+  })
 
   function update() {
     ctx.clearRect(0, 0, gameWidth, gameHeight);
     Object.keys(allCPlayers).forEach((key) => {
       allCPlayers[key].draw(ctx);
     });
+    if (gameWidth != innerWidth) {
+      gameWidth = innerWidth;
+      canvas.width = gameWidth;
+    }
+
+    if (gameHeight != innerHeight) {
+      gameHeight = innerHeight;
+      canvas.height = gameHeight;
+    }
+
     requestAnimationFrame(update);
   }
   update();
