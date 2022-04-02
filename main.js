@@ -41,9 +41,6 @@ class Player {
     if (isYou) {
 
       this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      this.cube1 = new THREE.Mesh(this.geometry, this.material);
-      scene.add(this.cube1);
-      this.cube1.position.set(0, 3, 5);
       this.camera.position.set(0, 2, 5);
       this.group.add(this.camera);
     }
@@ -175,7 +172,6 @@ function initGame() {
 
   function update() {
     requestAnimationFrame(update);
-
     renderer.render(scene, thisCPlayer.camera);
     renderer.setSize(innerWidth, innerHeight);
     thisCPlayer.camera.aspect = innerWidth / innerHeight;
